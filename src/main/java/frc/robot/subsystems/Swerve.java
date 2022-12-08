@@ -54,6 +54,10 @@ public class Swerve extends SubsystemBase {
 
         for(SwerveModule mod : mSwerveMods){
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+
+            if (mod.moduleNumber == 0) {
+            SmartDashboard.putNumber("Angle | mod 0", mod.getState().angle.getDegrees() % 360);
+            }
         }
     }    
 
@@ -94,7 +98,8 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        swerveOdometry.update(getYaw(), getStates());  
+        swerveOdometry.update(getYaw(), getStates());
+        SmartDashboard.putNumber("gyro", gyro.getYaw());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
