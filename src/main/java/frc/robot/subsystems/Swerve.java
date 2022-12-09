@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.PigeonIMU;
 
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
@@ -84,6 +83,12 @@ public class Swerve extends SubsystemBase {
 
     public void zeroGyro(){
         gyro.setYaw(0);
+    }
+
+    public void zeroHeading(Pose2d pose) {
+        resetOdometry(pose);
+        zeroGyro();
+
     }
 
     public Rotation2d getYaw() {
