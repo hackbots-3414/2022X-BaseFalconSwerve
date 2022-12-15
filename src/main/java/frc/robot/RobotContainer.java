@@ -67,4 +67,9 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new exampleAuto(s_Swerve, "New Path");
   }
+
+  public void resetAngleMotors() {
+    s_Swerve.resetAll();
+  }
+
 }

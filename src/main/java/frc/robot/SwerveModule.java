@@ -3,11 +3,12 @@ package frc.robot;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -59,9 +60,15 @@ public class SwerveModule {
         lastAngle = angle;
     }
 
-    private void resetToAbsolute(){
-        double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
-        mAngleMotor.setSelectedSensorPosition(absolutePosition);
+    public void resetToAbsolute(){
+        if (angleEncoder.getLastError() != ErrorCode.valueOf(0)) {
+            resetToAbsolute();
+        } else {
+            double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
+            mAngleMotor.setSelectedSensorPosition(absolutePosition);
+            System.out.println("Good");
+            System.out.println(angleEncoder.getLastError());
+        }
     }
 
     private void configAngleEncoder(){        
