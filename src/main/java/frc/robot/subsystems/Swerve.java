@@ -49,6 +49,8 @@ public class Swerve extends SubsystemBase {
                                     translation.getY(), 
                                     rotation)
                                 );
+                                SmartDashboard.putNumber("JoystickX ", translation.getX());
+                                SmartDashboard.putNumber("JoystickY ", translation.getY());
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for(SwerveModule mod : mSwerveMods){

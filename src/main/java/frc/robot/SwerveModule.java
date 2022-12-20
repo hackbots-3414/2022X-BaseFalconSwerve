@@ -61,14 +61,19 @@ public class SwerveModule {
     }
 
     public void resetToAbsolute(){
-        if (angleEncoder.getLastError() != ErrorCode.valueOf(0)) {
-            resetToAbsolute();
-        } else {
-            double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
-            mAngleMotor.setSelectedSensorPosition(absolutePosition);
-            System.out.println("Good");
-            System.out.println(angleEncoder.getLastError());
+        // Implement pause to avoid recursive call stack
+        while (angleEncoder.getLastError() != ErrorCode.valueOf(0)) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ie) {
+                // no-op
+                ie.printStackTrace();
+            }
         }
+        double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
+        mAngleMotor.setSelectedSensorPosition(absolutePosition);
+        System.out.println("Good");
+        System.out.println(angleEncoder.getLastError());
     }
 
     private void configAngleEncoder(){        
